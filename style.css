@@ -1,0 +1,44 @@
+div{
+    border: solid black 1px;
+}
+body > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+}
+button{
+    width: 50px;
+    height: 30px;
+}
+.screen-box{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 100px;
+}
+.screen-box >div{
+    text-align: end;
+    width: 300px;
+    height: 100px;
+}
+.button-box{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.number{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 150px;
+    border: none;
+}
+.operator{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    border: none;
+    width: 100px;
+    height: 100px;
+}
