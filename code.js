@@ -6,8 +6,9 @@ function caculator(){
         "*":(a,b)=>a*b,
         "/":(a,b)=>a/b,
     }
-    this.caculating = function(){
-        let total = 0, content = ("+" + screen.textContent).split(""),opAvailable=[];
+    this.caculating = function(content){
+        let total = 0,opAvailable=[];
+        content = ("+" + content).split("")
         for(let key in this.caculate){
             opAvailable.push(key);
         }
@@ -17,7 +18,6 @@ function caculator(){
             if(arr.number != ""){
                 total = this.caculate[arr.operator](total,Number(arr.number));
             }
-            console.log(arr);
         }
         showResult(total);
     }
@@ -51,7 +51,7 @@ function buttonListener(){
                             break;
                 case "CE" : clearAll();
                             break;
-                case "=" : Caculator.caculating();
+                case "=" : Caculator.caculating(screen.textContent);
                             break;
                 default : showOnScreen(item.textContent);
             }
@@ -60,7 +60,13 @@ function buttonListener(){
 }buttonListener();
 
 function showOnScreen(text){
-    screen.textContent += text;
+    let arr = ["+","-","*","/"]
+    if(arr.indexOf(text) != -1){
+        screen.innerHTML += `<span style="color:red;font-weight:bolder;">${text}</span>`;
+    }
+    else{
+        screen.innerHTML += text;
+    }
     screen.scrollBy(screen.scrollHeight,0);
 }
 
