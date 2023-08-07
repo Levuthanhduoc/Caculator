@@ -19,6 +19,7 @@ button{
 }
 .screen-box >div{
     text-align: end;
+    overflow:auto;
     width: 300px;
     height: 100px;
 }
@@ -37,8 +38,9 @@ button{
 .operator{
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
-    border: none;
+    flex-direction: row;
+    justify-content: center;
     width: 100px;
-    height: 100px;
+    height: 120px;
+    border: none;
 }
