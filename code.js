@@ -15,29 +15,54 @@ function caculator(){
         while(content.length > 0){
             arr = this.extract(content,opAvailable)
             content = arr.text;
-            if(arr.number != ""){
+            if(arr.parentheses == 1){
+                total = this.caculate[arr.operator](total,this.caculating(arr.number));
+            }
+            else if(arr.number != ""){
                 total = this.caculate[arr.operator](total,Number(arr.number));
             }
         }
-        showResult(total);
+        return total;
     }
     this.extract = function(text,op){
-        let br = 0,num =[],operator,arr = {};
+        let br = 0,num =[],operator,arr = {},parentheses = 0;
         while(br < 2 && text.length > 0){
-            if(op.indexOf(text[0]) != -1 && br < 1){
-                operator = text.splice(0,1);
-                br++;
-            }
-            else if(op.indexOf(text[0]) != -1 && br >= 1){
-                br++;
+            if(["(",")"].indexOf(text[0]) != -1 || parentheses == 1){
+                if(text[0] == "(" && num != ""){
+                    br = 2;
+                }
+                else if(text[0] == "("){
+                    text.splice(0,1);
+                    parentheses = 1;
+                }
+                else if(text[0] == ")"){
+                    text.splice(0,1);
+                    br = 2;
+                }
+                else{
+                    num.push(text.splice(0,1));
+                }
             }
             else{
-                (num.push(text.splice(0,1)))
+                if(op.indexOf(text[0]) != -1 && br < 1){
+                    operator = text.splice(0,1);
+                    br++;
+                }
+                else if(op.indexOf(text[0]) != -1 && br >= 1){
+                    br++;
+                }
+                else{
+                    (num.push(text.splice(0,1)))
+                }
             }
         }
         arr["text"] = text;
         arr["number"] = num.join("");
+        if(operator == undefined ){
+            operator = "*"
+        }
         arr["operator"] = operator;
+        arr["parentheses"] = parentheses;
         return arr;
     }
 }
@@ -51,7 +76,7 @@ function buttonListener(){
                             break;
                 case "CE" : clearAll();
                             break;
-                case "=" : Caculator.caculating(screen.textContent);
+                case "=" :showResult(Caculator.caculating(screen.textContent));
                             break;
                 default : showOnScreen(item.textContent);
             }
@@ -71,7 +96,16 @@ function showOnScreen(text){
 }
 
 function removeOnScreen(){
-    screen.textContent = screen.textContent.slice(`-${(screen.textContent).length}`,-1)
+    let arr = ["+","-","*","/"]
+    let removeObject = screen.textContent.slice(-1);
+    let removeArr =[]; 
+    if(arr.indexOf(removeObject) != -1 ){
+        removeArr = screen.querySelectorAll("span")
+        removeArr = Array.from(removeArr);
+        removeArr[removeArr.length -1].remove();
+    }else{
+        screen.textContent = screen.textContent.slice(`-${(screen.textContent).length}`,-1)
+    }
 }
 
 function clearAll(){
